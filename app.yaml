@@ -1,10 +1,10 @@
-application: <your_appid>
+application: uits-eas
 version: 1
 runtime: python
 api_version: 1
 
 handlers:
-- url: /_ah/mail/notify@<your_appid>.appspotmail.com
+- url: /_ah/mail/.*-hipmail@uits-eas.appspotmail.com
   script: hipmailer.py 
 
 - url: .*
