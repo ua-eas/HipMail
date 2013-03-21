@@ -6,14 +6,10 @@ import logging
 import urllib, urllib2
 import models
 import re
-
-''' HipChat API token - https://www.hipchat.com/group_admin/api '''
-AUTH_TOKEN = 'authtoken'
-''' HipChat room id - easiest way to get this is to sign in to the web and go to https://www.hipchat.com/history - the room is in the room URLs '''
-ROOM_ID = '99999'
+import settings
 
 def sendNotification(sender, message, roomID):
-    url = 'http://api.hipchat.com/v1/rooms/message?auth_token=%s&notify=1&format=json' % (AUTH_TOKEN)
+    url = 'http://api.hipchat.com/v1/rooms/message?auth_token=%s&notify=1&format=json' % settings.authToken
     # concatenates the subject of the email with a link to a page showing the message contents.
     data = urllib.urlencode({'room_id': roomID, 
                              'from': 'HipMail',
@@ -38,13 +34,15 @@ class EmailReceivedHandler(InboundMailHandler):
            email.email_body = body.decode()
         email.put()
 	logging.info('rawto %s' % mail_message.to)
-	regex = re.compile(".*<(.*)-hipmail@uits-eas.appspotmail.com>$")
-	r = regex.search(mail_message.to)
-	roomName = r.group(1)
-	logging.info('roomname %s' % roomName)
-	rooms = {'march-madness' : '160021', 'hipmail' : '160263'}
-	''' roomID = "160263" '''
-	roomID = rooms[roomName] 
+	try:
+		regex = re.compile(".*<(.*)-hipmail@uits-eas.appspotmail.com>$")
+		r = regex.search(mail_message.to)
+		roomName = r.group(1)
+		logging.info('roomname %s' % roomName)
+		roomID = settings.rooms[roomName] 
+	except:
+		roomID = settings.rooms['hipmail']
+
         ''' sends the notification, including a link to the email.'''
         notification = '%s [<a href=\'http://uits-eas.appspot.com/message/%s\'>view</a>]' % (email.email_subject, email.key().id_or_name()) 
         logging.info ('Sending HipChat notification: %s' % sendNotification ( mail_message.sender, notification, roomID )) 

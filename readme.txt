@@ -1,24 +1,3 @@
-UA specific stuff:
-
-google app engine account:
-http://uits-eas.appspot.com/
-
-To log in you have to use your catmail secondary password, which you can get at netid.arizona.edu
-
-currently configured email addresses:
-hipmail-hipmail@uits-eas.appspotmail.com
-march-madness-hipmail@uits-eas.appspotmail.com
-
-To add a new address, find the the roomID at
-
-https://eas.hipchat.com/history
-
-edit 
-	rooms = {'march-madness' : '160021', 'hipmail' : '160263'}
-
-in hipmailer.py. Then redploy the app.
-
-==================
 
 HipMail is an application for sending notifications to HipChat.
 
@@ -38,7 +17,7 @@ The first draft has the HipChat API auth_token and room IDs hard-coded, so futur
 NB This is not a hosted application - in order to use it you will need to do the following:
 1. Have a working Google AppEngine account
 2. Download the the GAE Python SDK
-3. Download and amend the source code in this repo - updating the AUTH_TOKEN and ROOM_ID variables in the hipmailer.py file
+3. Download and amend the source code in this repo. Rename settings_template.py to settings.py and adjust the variables as appropriate.
 4. Upload to your own GAE account.
 
 The email address to which to send the notifications will depend on the AppEngine app_id you use - more details can be found on the Google help site here - http://code.google.com/appengine/docs/python/mail/receivingmail.html
